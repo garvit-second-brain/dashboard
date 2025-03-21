@@ -1,0 +1,70 @@
+.noneDisplay {
+  display: none;
+}
+
+.leftPadding {
+  padding-left: 0px;
+}
+
+.fullWidth {
+  width: 100% !important;
+  display: block;
+  border-radius: 20px;
+}
+
+.whiteBackground {
+  background-color: #fff;
+}
+
+.boldFontWeight {
+  font-weight: bold;
+}
+
+.dateInputField {
+  font-size: 12px;
+  line-height: 26px;
+  position: relative;
+  background: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.dateButton {
+  position: absolute;
+  top: 6px;
+  right: 22px;
+  padding: 0px;
+  border: 0px;
+}
+
+.noProductChannel {
+  border-radius: 10px;
+  background-color: #fff;
+  display: block;
+  padding: 30px 0px;
+  margin: 0px 18px !important;
+  text-align: center;
+}
+
+.blockDisplay {
+  display: block;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.statusDesktop {
+  padding: 2px 20px;
+  border-radius: 20x;
+  width: 75%;
+  margin: auto;
+}
+
+.statusMobile {
+  padding: 0px 2px;
+  margin: 3px 0px;
+  border-radius: 20x;
+  width: 58%;
+}

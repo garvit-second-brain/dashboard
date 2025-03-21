@@ -1,0 +1,15 @@
+.pointerCursor {
+  cursor: pointer;
+}
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.borderNone {
+  border: none;
+  height: 1px;
+  background: #ffffff;
+  margin-top: 0px;
+}

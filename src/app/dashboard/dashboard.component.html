@@ -1,0 +1,469 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+
+<body class="fixed-nav sticky-footer bg-dark hidenav" id="page-top">
+  <!-- Navigation-->
+  <!-- <app-header></app-header> -->
+  <div class="content-wrapper">
+    <div id="overlay" class=""></div>
+    <span id="loader" class="">Loading... </span>
+    <div class="container-fluid" id="containerd-fluid">
+      <!-- Title-->
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <span>Dashboard</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <!-- Filters -->
+      <div class="row">
+        <div class="col-md-5 col-xl-3 col-xs-8 breakonmobile">
+          <input
+            type="text"
+            class="dateragefilter datepicker-calendar-icon dateInputField"
+            matInput
+            #inf
+            ngxDaterangepickerMd
+            startKey="start"
+            endKey="end"
+            [showCustomRangeLabel]="true"
+            [linkedCalendars]="true"
+            [(ngModel)]="selected"
+            placeholder="Choose date"
+            name="daterange"
+            [ranges]="ranges"
+            (ngModelChange)="datechange(); onFilterChange()"
+          />
+          <button
+            (click)="openDatepicker(inf)"
+            class="ngx-daterangepicker-action calendar_icon_button dateButton"
+            type="button"
+          >
+            <i
+              class="fa fa-calendar ngx-daterangepicker-action"
+              (click)="openDatepicker(inf)"
+            ></i>
+          </button>
+        </div>
+        <div class="col-md-5 col-xl-4">
+          <div class="transaction_filter_div">
+            <div class="row">
+              <div class="col-md-10 col-xs-12">
+                <div class="operationtranxfilter">
+                  <span *ngIf="enable">All Operations</span>
+                  <span *ngIf="!enable">Transaction Operations Only</span>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="operationtranxfiltericon">
+                  <ui-switch
+                    (ngModelChange)="onFilterChange()"
+                    [(ngModel)]="enable"
+                    defaultBgColor="#eee"
+                    size="small"
+                    (change)="toggletranschange($event)"
+                    [checked]="false"
+                    color="#000033"
+                    switchColor="#fcfcfc"
+                  ></ui-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12"></div>
+      </div>
+      <br />
+
+      <div class="row noProductChannel" *ngIf="productChannelIds.length == 0">
+        <span class="boldFontWeight"
+          >No Product Channel are assigned to this user</span
+        >
+      </div>
+      <div *ngIf="productChannelIds.length > 0">
+        <div class="row">
+          <div class="col-md-12">
+            <highcharts-chart
+              [Highcharts]="highcharts"
+              [options]="successFailedTransaction"
+              class="blockDisplay"
+            ></highcharts-chart>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-6 breakonmobile">
+            <div class="barchart-upperdiv">
+              <div class="" id="vendortype_main_div">
+                <highcharts-chart
+                  [Highcharts]="highcharts"
+                  [options]="ChartOptions_vendors"
+                  class="fullWidth"
+                ></highcharts-chart>
+                <ng-multiselect-dropdown
+                  class="barchartselect"
+                  name="vendorName"
+                  [placeholder]="'Select Vendor Type'"
+                  [settings]="vendorNameSettings"
+                  [data]="vendors"
+                  (onSelect)="onVendorItemSelect($event)"
+                  (onDeSelect)="onVendorItemDeSelect($event)"
+                  (onSelectAll)="onVendorSelectAll()"
+                  (onDeSelectAll)="onVendorDeSelectAll($event, false)"
+                  [(ngModel)]="selectedvendorItems"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="noneDisplay" id="vendortype_fail_div">
+                <span class="fail_div_chart">Fail to load the vendor type</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="barchart-upperdiv">
+              <div class="" id="cardtype_main_div">
+                <highcharts-chart
+                  [Highcharts]="highcharts"
+                  [options]="ChartOptions_cardtype"
+                  class="fullWidth"
+                ></highcharts-chart>
+
+                <ng-multiselect-dropdown
+                  class="barchartselect"
+                  name="cardtype"
+                  [placeholder]="'Select Card Type'"
+                  [settings]="cardTypeSettings"
+                  [data]="cardtype"
+                  (onSelect)="onCardTypeItemSelect($event)"
+                  (onDeSelect)="onCardTypeItemDeSelect($event)"
+                  (onSelectAll)="onCardTypeSelectAll()"
+                  (onDeSelectAll)="onCardTypeDeSelectAll()"
+                  [(ngModel)]="selectedCardItems"
+                >
+                </ng-multiselect-dropdown>
+                <div class="vendor_label">
+                  <span *ngIf="this.selectedvendorItems.length < 4">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="let vendorlabel of this.selectedvendorItems"
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                  </span>
+                  <span *ngIf="this.selectedvendorItems.length > 3">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="
+                        let vendorlabel of this.selectedvendorItems.slice(0, 3)
+                      "
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                    <span class="vendor_label_no"
+                      >+ {{ this.selectedvendorItems.length - 3 }}</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="noneDisplay" id="cardtype_fail_div">
+                <span class="fail_div_chart">Fail to load the card type</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6 breakonmobile">
+            <div class="barchart-upperdiv">
+              <div class="" id="paymenttype_main_div">
+                <highcharts-chart
+                  [Highcharts]="highcharts"
+                  [options]="ChartOptions_paymenttype"
+                  class="fullWidth"
+                ></highcharts-chart>
+
+                <ng-multiselect-dropdown
+                  class="barchartselect"
+                  name="paymenttype"
+                  [placeholder]="'Select Payment Type'"
+                  [settings]="paymentTypeSettings"
+                  [data]="paymenttype"
+                  (onSelect)="onPaymentTypeItemSelect($event)"
+                  (onDeSelect)="onPaymentTypeItemDeSelect($event)"
+                  (onSelectAll)="onPaymentTypeSelectAll()"
+                  (onDeSelectAll)="onPaymentTypeDeSelectAll()"
+                  [(ngModel)]="selectedPaymentItems"
+                >
+                </ng-multiselect-dropdown>
+                <div class="vendor_label">
+                  <span *ngIf="this.selectedvendorItems.length < 4">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="let vendorlabel of this.selectedvendorItems"
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                  </span>
+                  <span *ngIf="this.selectedvendorItems.length > 3">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="
+                        let vendorlabel of this.selectedvendorItems.slice(0, 3)
+                      "
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                    <span class="vendor_label_no"
+                      >+ {{ this.selectedvendorItems.length - 3 }}</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="noneDisplay" id="paymenttype_fail_div">
+                <span class="fail_div_chart"
+                  >Fail to load the payment type</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="barchart-upperdiv">
+              <div class="" id="operationtype_main_div">
+                <span class="operationtypedesktop">
+                  <highcharts-chart
+                    [Highcharts]="highcharts"
+                    [options]="ChartOptions_operationtype"
+                    class="fullWidth"
+                  ></highcharts-chart>
+                </span>
+                <span class="operationtypemobile">
+                  <highcharts-chart
+                    [Highcharts]="highcharts"
+                    [options]="ChartOptions_operationtypem"
+                    class="fullWidth"
+                  ></highcharts-chart>
+                </span>
+                <ng-multiselect-dropdown
+                  class="barchartselect"
+                  name="operationItems"
+                  [placeholder]="'Select Operation Type'"
+                  [settings]="operationTypeSettings"
+                  [data]="operationtype"
+                  (onSelect)="onOperationTypeItemSelect($event)"
+                  (onDeSelect)="onOperationTypeItemDeSelect($event)"
+                  (onSelectAll)="onOperationTypeSelectAll()"
+                  (onDeSelectAll)="onOperationTypeDeSelectAll()"
+                  [(ngModel)]="selectedOperationItems"
+                >
+                </ng-multiselect-dropdown>
+                <div class="vendor_label">
+                  <span *ngIf="this.selectedvendorItems.length < 4">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="let vendorlabel of this.selectedvendorItems"
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                  </span>
+                  <span *ngIf="this.selectedvendorItems.length > 3">
+                    <span
+                      class="vendor_label_list"
+                      *ngFor="
+                        let vendorlabel of this.selectedvendorItems.slice(0, 3)
+                      "
+                      >{{ vendorlabel.vendorName }}</span
+                    >
+                    <span class="vendor_label_no"
+                      >+ {{ this.selectedvendorItems.length - 3 }}</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="noneDisplay" id="operationtype_fail_div">
+                <span class="fail_div_chart"
+                  >Fail to load the operation type</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <span>Recent Transactions</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <!-- <br> -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive" id="recent_main_div">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Transaction ID</th>
+                    <th>Profile ID</th>
+                    <th>Date</th>
+                    <th>Operation Type</th>
+                    <th>Transaction Type</th>
+                  </tr>
+                </thead>
+                <tbody class="whiteBackground">
+                  <tr *ngFor="let rData of recentTransacation">
+                    <td>
+                      <span *ngIf="rData.amount === null">0.00</span>
+                      <span *ngIf="rData.amount != ''">{{ rData.amount }}</span>
+                    </td>
+
+                    <td>
+                      <span
+                        class="statusDesktop"
+                        [ngStyle]="{
+                          'background-color':
+                            rData.status === 'Succeeded'
+                              ? '#DAFCE2'
+                              : rData.status !== 'Succeeded'
+                              ? '#F9DCD5'
+                              : ''
+                        }"
+                        >{{ rData.status }}</span
+                      >
+                    </td>
+                    <td>
+                      <span *ngIf="rData.transactionId === ''"
+                        >Not Applicable</span
+                      >
+                      <span *ngIf="rData.transactionId != ''">{{
+                        rData.transactionId
+                      }}</span>
+                    </td>
+                    <td>{{ rData.profileId }}</td>
+                    <td>{{ rData.date | date : "dd-MM-yyyy" }}</td>
+                    <td>{{ rData.operationTypeName }}</td>
+                    <td>{{ rData.transactionType | titlecase }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive" id="recent_main_divmobile">
+              <div class="outer-box" *ngFor="let rData of recentTransacation">
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Amount</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody boldFontWeight"
+                      *ngIf="rData.amount === null"
+                      >0.00</span
+                    >
+                    <span
+                      class="mobiletbody boldFontWeight"
+                      *ngIf="rData.amount != ''"
+                      >{{ rData.amount }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Status</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody statusMobile"
+                      [ngStyle]="{
+                        'background-color':
+                          rData.status === 'Succeeded'
+                            ? '#DAFCE2'
+                            : rData.status != 'Succeeded'
+                            ? '#F9DCD5'
+                            : ''
+                      }"
+                      >{{ rData.status }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Transaction ID</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody" *ngIf="rData.transactionId === ''"
+                      >Not Applicable</span
+                    >
+                    <span
+                      class="mobiletbody"
+                      *ngIf="rData.transactionId != ''"
+                      >{{ rData.transactionId }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Profile ID</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.profileId }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Date</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{
+                      rData.date | date : "dd-MM-yyyy"
+                    }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Operation Type</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{
+                      rData.operationTypeName
+                    }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6">
+                    <span class="mobilethead">Transaction Type</span>
+                  </div>
+                  <div class="col-xs-6">
+                    <span class="mobiletbody">{{
+                      rData.transactionType | titlecase
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="noneDisplay" id="recent_fail_div">
+              <span class="fail_div_recent"
+                >Fail to load the recent transaction</span
+              >
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</body>

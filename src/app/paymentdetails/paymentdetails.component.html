@@ -1,0 +1,480 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <!-- <app-header></app-header> -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Title-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="customerdetailpage">
+            <div class="heading_detailpage">
+              <p class="zeroMargin">Payment Summary</p>
+            </div>
+            <hr class="borderNone" />
+
+            <div class="row">
+              <div class="col-md-3 col-xs-6 verticalline">
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Status</p>
+                  <p
+                    *ngIf="paymentDetailsData.status === 'Succeeded'"
+                    class="statusBackground successStatus"
+                  >
+                    {{ paymentDetailsData.status }}
+                  </p>
+                  <p
+                    *ngIf="paymentDetailsData.status === 'Failed'"
+                    class="statusBackground failedStatus"
+                  >
+                    {{ paymentDetailsData.status }}
+                  </p>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-md-2 col-xs-6': true,
+                  verticalline: isVerticalLineVisible
+                }"
+              >
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Date</p>
+                  <p>{{ paymentDetailsData.createdDate }}</p>
+                </div>
+              </div>
+              <div class="col-md-2 col-xs-6 verticalline">
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Amount</p>
+                  <p>{{ paymentDetailsData.transAmount }}</p>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-md-2 col-xs-6': true,
+                  verticalline: isVerticalLineVisible
+                }"
+              >
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Profile ID</p>
+                  <p
+                    (click)="
+                      navigateToCustomerDetails(paymentDetailsData.profileId)
+                    "
+                    class="navigateProfileId"
+                  >
+                    {{ paymentDetailsData.profileId }}
+                  </p>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-md-3 col-xs-6': true,
+                  verticalline: !isVerticalLineVisible
+                }"
+              >
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">
+                    Payment Type
+                  </p>
+                  <p>{{ paymentDetailsData.paymentType }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+
+          <div class="customerdetailpage">
+            <div class="heading_detailpage">
+              <p class="zeroMargin">Payment Details</p>
+            </div>
+
+            <hr class="borderNone" />
+            <div class="row">
+              <div
+                [ngClass]="{
+                  'col-md-6': true,
+                  verticalline: isVerticalLineVisible
+                }"
+              >
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Tax Amount</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.taxAmount }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Card Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.cardType }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="paymentDetailsData.status === 'Succeeded'"
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Transaction ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.transId }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Operation Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.operationType }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Payment Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.paymentType }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Vendor</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.vendor }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Site Code</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.siteCode }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Merchant ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.merchantId }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="paymentDetailsData.status === 'Succeeded'"
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Approval Code</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.approvalCode }}
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="paymentDetailsData.status === 'Failed'" class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Error Code</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.errorCode }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="paymentDetailsData.status === 'Succeeded'"
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Approval Message</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.approvalMsg }}
+                    </p>
+                  </div>
+                </div>
+
+                <div *ngIf="paymentDetailsData.status === 'Failed'" class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Error Message</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.errorMessage }}
+                    </p>
+                  </div>
+                </div>
+
+                <div *ngIf="paymentDetailsData.status === 'Failed'" class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Retryable</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.retryable }}
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="paymentDetailsData.status === 'Failed'" class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Decline Reason</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.declinedReason }}
+                    </p>
+                  </div>
+                </div>
+                <div *ngIf="paymentDetailsData.status === 'Failed'" class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Decline Reason String</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.declinedReasonString }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="paymentDetailsData.status === 'Succeeded'"
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">AVS Response</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.avsResponse }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  *ngIf="paymentDetailsData.status === 'Succeeded'"
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">CSC Response</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.cscResponse }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Operation ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.operationId }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Group ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.groupId }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">
+                      Initial Transaction ID
+                    </p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.initialTransactionId }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Created Date</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.createdDate }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Updated Date</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.updatedDate }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="
+                    paymentDetailsData.transId !== undefined &&
+                    paymentDetailsData.transId !== null &&
+                    paymentDetailsData.transId !== ''
+                  "
+                  class="row"
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">AU Last Update</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.auLastUpdate }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Transaction Mode</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.transactionMode }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Transaction Frequency</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.transactionFrequency }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Descriptor</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.statementDescriptor }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Invoice Number</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.invoiceNbr }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Custom 1</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.custom1 }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Custom 2</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.custom2 }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Custom 3</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.custom3 }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Initiated By</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ paymentDetailsData.initiatedBy }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-3">
+                <div class="rightFloat">
+                  <a onclick="history.back()"
+                    ><button
+                      name="submit"
+                      class="inputbutton pointerCursor"
+                      value="search"
+                    >
+                      Back
+                    </button></a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

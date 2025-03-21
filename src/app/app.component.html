@@ -1,0 +1,156 @@
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-dark1 fixed-top hidenav"
+  id="mainNav"
+  *ngIf="showHead"
+>
+  <a class="navbar-brand" href="index.html">
+    <img src="../assets/logo.png" class="desktoplogo" />
+    <img src="../assets/mobilelogo.png" class="mobilelogo" />
+  </a>
+  <button
+    class="navbar-toggler navbar-toggler-right"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarResponsive"
+    aria-controls="navbarResponsive"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <i class="fa fa-bars baricon"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul
+      class="navbar-nav navbar-sidenav"
+      id="exampleAccordion"
+      *ngIf="userDashboard"
+    >
+      <li
+        class="nav-item"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Dashboard"
+        id="list"
+      >
+        <a class="nav-link"> </a>
+      </li>
+      <li
+      [ngClass]="!userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Dashboard"
+        id="list"
+      >
+        <a class="nav-link" id="dashboard" href="/dashboard">
+          <i class="fa fa-home iconsize"></i>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+      </li>
+      <li
+      [ngClass]="!userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Payments"
+        id="list1"
+      >
+        <a class="nav-link" id="payments" href="/payments">
+          <div class="alignCenter">
+            <div class="alignCenter">
+              <i class="fa fa-briefcase iconsize"></i>
+            </div>
+            <div><span class="nav-link-text">Payments</span></div>
+          </div>
+        </a>
+      </li>
+
+      <li
+      [ngClass]="!userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Customers"
+        id="list"
+      >
+        <a class="nav-link" id="customers" href="/customers">
+          <i class="fa fa-user iconsize"></i>
+          <span class="nav-link-text">Customers</span>
+        </a>
+      </li>
+
+      <li
+      [ngClass]="!userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Scenarios"
+        id="list"
+      >
+        <a class="nav-link" id="scenarios" href="/scenarios">
+          <div class="alignCenter">
+            <div class="alignCenter">
+              <i class="fa fa-random iconsize"></i>
+            </div>
+            <div><span class="nav-link-text">Scenarios</span></div>
+          </div>
+        </a>
+      </li>
+
+      <li
+      [ngClass]="!userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        id="adminID"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Admin"
+        id="list"
+      >
+        <a class="nav-link" id="admin" href="/admin">
+          <i class="fa fa-shield iconsize"></i>
+
+          <span class="nav-link-text">Admin</span>
+        </a>
+      </li>
+    </ul>
+    <ul
+      class="navbar-nav navbar-sidenav"
+      id="exampleAccordion"
+      *ngIf="!userDashboard"
+    >
+      <li
+      [ngClass]="userDashboard ? 'nav-item hidesidebar' : 'nav-item'"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Customers"
+        id="list"
+      >
+        <a class="nav-link" id="customers" href="/manageCustomers">
+          <i class="fa fa-user iconsize"></i>
+          <span class="nav-link-text">Customers</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto userCheck">
+      <li
+        class="nav-item userdetailshide userCheck"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Example Pages"
+      >
+        <hr class="borderNone" />
+      </li>
+
+      <li class="nav-item">
+        <div class="dropdown">
+          <div class="dropbtn pointerCursor">
+            <span id="username"></span>
+            &nbsp;<i class="fa fa-user"></i>
+          </div>
+          <div class="dropdown-content">
+            <a (click)="logout()">
+              <i class="fa fa-arrow-right"></i> &nbsp;&nbsp;Logout</a
+            >
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<router-outlet id="routerdata" class="hidenav"> </router-outlet>

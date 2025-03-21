@@ -1,0 +1,508 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <!-- <app-header></app-header> -->
+  <div class="content-wrapper">
+    <div id="overlay" class=""></div>
+    <span id="loader" class="">Loading... </span>
+    <div class="container-fluid">
+      <!-- Title-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="customerdetailpage">
+            <div class="heading_detailpage flexDisplay">
+              <p class="zeroMargin">Profile Summary</p>
+              <button (click)="sync()" class="inputbutton syncButton">
+                <div>Sync Customer</div>
+              </button>
+            </div>
+            <hr class="borderNone" />
+            <div class="row">
+              <div class="col-md-3 col-xs-6 verticalline">
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Profile ID</p>
+                  <p>
+                    {{ profileDetailsData.profileId }}
+                  </p>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'col-md-3 col-xs-6': true,
+                  verticalline: isVerticalLineVisible
+                }"
+              >
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">
+                    Merchant ID
+                  </p>
+                  <p>
+                    {{ profileDetailsData.merchantId }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-6 verticalline">
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Email</p>
+                  <p>
+                    {{ profileDetailsData.email }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-6">
+                <div class="content_detailpage">
+                  <p class="text_detailpage_heading bottomMargin">Card Type</p>
+                  <p>
+                    {{ profileDetailsData.cardType }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br />
+          <div class="customerdetailpage">
+            <div class="heading_detailpage">
+              <p class="zeroMargin">Profile Details</p>
+            </div>
+            <hr class="borderNone" />
+            <div class="row">
+              <div
+                [ngClass]="{
+                  'col-md-6': true,
+                  verticalline: isVerticalLineVisible
+                }"
+              >
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.profileId }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">First Name</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.firstName }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Last Name</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.lastName }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Email</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.email }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Phone</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.phone }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Fax</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">{{ profileDetailsData.fax }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Company</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.company }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Billing Address 1</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.address }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Billing Address 2</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.address2 }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">City</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">{{ profileDetailsData.city }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">State</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.state }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Zip</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.zipCode }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Country</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.country }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Created Date</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.createdAt }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Updated Date</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.updatedAt }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Ref Key 1</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.refKey1 }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Ref Key 2</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.refKey2 }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Card Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.cardType }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Card Number</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.cardNumber }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Account Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.accountType }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Account Number</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.accountNumber }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Routing Number</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.routingNumber }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Bank Name</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.bankName }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Payment Type</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.paymentType }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Expiration Month</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.expirationMonth }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Expiration Year</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.expirationYear }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Vendor</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.vendor }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Active</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.isActive }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Site Code</p>
+                  </div>
+                  <div
+                    *ngIf="profileDetailsData.siteCode"
+                    class="col-md-6 col-xs-6"
+                  >
+                    <p
+                      class="text_detailpage menuCursor"
+                      title="{{ profileDetailsData.siteCode }}"
+                      *ngIf="profileDetailsData.siteCode.length >= 10"
+                    >
+                      {{ profileDetailsData.siteCode.slice(0, 10) + "..." }}
+                    </p>
+                    <p
+                      *ngIf="profileDetailsData.siteCode.length < 10"
+                      class="text_detailpage"
+                    >
+                      {{ profileDetailsData.siteCode }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Merchant ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.merchantId }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Operation ID</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.operationId }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="row"
+                  *ngIf="
+                    profileDetailsData.errorCode !== undefined ||
+                    profileDetailsData.errorCode !== null
+                  "
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Error Code</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.errorCode }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="row"
+                  *ngIf="
+                    profileDetailsData.errorMessage !== undefined ||
+                    profileDetailsData.errorMessage !== null
+                  "
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Error Message</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.errorMessage }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Operation Code</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage">
+                      {{ profileDetailsData.operationCode }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="row"
+                  *ngIf="
+                    profileDetailsData.operationText !== undefined ||
+                    profileDetailsData.operationText !== null
+                  "
+                >
+                  <div class="col-md-6 col-xs-6">
+                    <p class="text_detailpage_heading">Operation Message</p>
+                  </div>
+                  <div class="col-md-6 col-xs-6">
+                    <p
+                      class="text_detailpage menuCursor"
+                      title="{{ profileDetailsData.operationText }}"
+                      *ngIf="profileDetailsData.operationText.length >= 12"
+                    >
+                      {{
+                        profileDetailsData.operationText.slice(0, 12) + "..."
+                      }}
+                    </p>
+                    <p
+                      *ngIf="profileDetailsData.operationText.length < 12"
+                      class="text_detailpage"
+                    >
+                      {{ profileDetailsData.operationText }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-9"></div>
+              <div class="col-md-3">
+                <div class="rightFloat">
+                  <a onclick="history.back()"
+                    ><button
+                      name="submit"
+                      class="inputbutton pointerCursor"
+                      value="search"
+                    >
+                      Back
+                    </button></a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

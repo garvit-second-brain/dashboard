@@ -1,0 +1,375 @@
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <span>Reports</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="buttons-flex">
+            <div
+              class="col-md-3 breakonmobilepaymentsdate"
+              style="padding-left: 0"
+            >
+              <input
+                type="text"
+                class=""
+                style="
+                  font-size: 12px;
+                  line-height: 26px;
+                  position: relative;
+                  background: #fff;
+                  cursor: pointer;
+                  padding: 5px 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 20px;
+                  width: 100%;
+                "
+                #inf
+                ngxDaterangepickerMd
+                startKey="start"
+                endKey="end"
+                [showCustomRangeLabel]="true"
+                [alwaysShowCalendars]="true"
+                [linkedCalendars]="true"
+                [(ngModel)]="selected"
+                placeholder="Choose date"
+                name="daterange"
+                [ranges]="ranges"
+                (ngModelChange)="validateDateRange()"
+                readonly
+              />
+
+              <button
+                (click)="openDatepicker(inf)"
+                class="ngx-daterangepicker-action calendar_icon_button"
+                style="
+                  position: absolute;
+                  top: 6px;
+                  right: 22px;
+                  padding: 0px;
+                  border: 0px;
+                "
+                type="button"
+              >
+                <i
+                  class="fa fa-calendar ngx-daterangepicker-action"
+                  (click)="openDatepicker(inf)"
+                ></i>
+              </button>
+            </div>
+
+            <div class="flex">
+              <div>
+                <button
+                  [ngClass]="selectAllEnabled ? 'clearAll' : 'selectAll'"
+                  (click)="handleSelectAll()"
+                >
+                  Select All
+                </button>
+              </div>
+              <div>
+                <button
+                  [ngClass]="clearAllEnabled ? 'clearAll' : 'selectAll'"
+                  (click)="handleCancelAll()"
+                >
+                  Clear All
+                </button>
+              </div>
+              <div>
+                <button class="download" (click)="handleDownload()">
+                  <span>Download</span>
+                  <span class="material-symbols-outlined"> download </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="toggleTable; then openTable; else closeTable"></div>
+      <ng-template #closeTable>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="buttons-flex">
+              <div class="title">Saved Reports</div>
+              <div
+                class="fa fa-solid fa-chevron-down"
+                (click)="handleTableOpen()"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #openTable>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-table" style="border-radius: 20px">
+              <div class="table-top">
+                <div
+                  style="display: flex; align-items: center; column-gap: 10px"
+                >
+                  <div class="title">Saved Reports</div>
+                  <div>
+                    <button
+                      class="add-button"
+                      title="Create Report"
+                      (click)="handleCreateReport()"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="fa fa-solid fa-chevron-up"
+                  (click)="handleTableClose()"
+                ></div>
+              </div>
+              <div class="table-responsive" id="recent_main_div">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <div
+                    *ngIf="
+                      savedReportsData.length > 0;
+                      then trueblock;
+                      else falseblock
+                    "
+                  ></div>
+                  <ng-template #trueblock>
+                    <tbody>
+                      <tr
+                        *ngFor="let savedData of savedReportsData; index as i"
+                      >
+                        <td
+                          style="cursor: pointer"
+                          (click)="handleNameClick(i)"
+                        >
+                          <span
+                            [ngClass]="{ highlightName: toggleNameStates[i] }"
+                            ><ng-container
+                              *ngIf="!editModeByIndex[i]; else editName"
+                            >
+                              {{ savedData.name }}
+                            </ng-container>
+                            <ng-template #editName>
+                              <input
+                                type="text"
+                                [(ngModel)]="editedName"
+                                (click)="preventClickPropagation($event)"
+                              /> </ng-template
+                          ></span>
+                        </td>
+                        <td>
+                          <ng-container
+                            *ngIf="!editModeByIndex[i]; else editDescription"
+                          >
+                            {{ savedData.description }}
+                          </ng-container>
+                          <ng-template #editDescription>
+                            <input
+                              type="text"
+                              [(ngModel)]="editedDescription"
+                            />
+                          </ng-template>
+                        </td>
+                        <td
+                          style="
+                            display: flex;
+                            justify-content: center;
+                            column-gap: 10px;
+                          "
+                        >
+                          <i
+                            class="fa fa-floppy-o"
+                            aria-hidden="true"
+                            title="Save"
+                            (click)="handleSaveClick(i)"
+                            [ngClass]="{
+                              activeColor: saveButtonByIndex[i],
+                              inactiveColor: !saveButtonByIndex[i]
+                            }"
+                          ></i>
+                          <i
+                            class="fa fa-pencil"
+                            aria-hidden="true"
+                            title="Edit"
+                            (click)="handleEditClick(i)"
+                            [ngClass]="{
+                              activeColor: editButtonByIndex[i],
+                              inactiveColor: !editButtonByIndex[i]
+                            }"
+                          ></i>
+                          <i
+                            class="fa fa-trash"
+                            aria-hidden="true"
+                            title="Delete"
+                            (click)="handleDeleteClick(i)"
+                            [ngClass]="{
+                              activeColor: deleteButtonByIndex[i],
+                              inactiveColor: !deleteButtonByIndex[i]
+                            }"
+                          ></i>
+                        </td>
+                      </tr>
+                      <tr *ngIf="activateReports">
+                        <td>
+                          <input
+                            type="text"
+                            name="name"
+                            [(ngModel)]="nameInputValue"
+                            (input)="updateSaveNewButtonState()"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            name="description"
+                            [(ngModel)]="descriptionInputValue"
+                            (input)="updateSaveNewButtonState()"
+                          />
+                        </td>
+                        <td
+                          style="
+                            display: flex;
+                            justify-content: center;
+                            column-gap: 10px;
+                          "
+                        >
+                          <i
+                            class="fa fa-floppy-o"
+                            aria-hidden="true"
+                            title="Save"
+                            (click)="handleSaveReport()"
+                            [ngClass]="{
+                              activeColor: saveNewButton,
+                              inactiveColor: !saveNewButton
+                            }"
+                          ></i>
+                          <i
+                            class="fa fa-pencil inactiveColor"
+                            aria-hidden="true"
+                            title="Edit"
+                          ></i>
+                          <i
+                            class="fa fa-trash inactiveColor"
+                            aria-hidden="true"
+                            title="Delete"
+                          ></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </ng-template>
+
+                  <ng-template #falseblock>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td
+                          style="
+                            color: #d9d9d9;
+                            font-weight: bold;
+                            font-size: 15px;
+                          "
+                        >
+                          NO RECORDS FOUND
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </ng-template>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div *ngIf="showFilters; then newfilters; else originalfilters"></div>
+          <ng-template #originalfilters>
+            <div class="cards" *ngFor="let filters of allFilters">
+              <div class="card title" *ngFor="let filter of filters">
+                {{ filter[0].label }}
+                <div class="items">
+                  <p *ngFor="let eachFilter of filter; let i = index">
+                    <input
+                      type="checkbox"
+                      [id]="eachFilter.label"
+                      [checked]="eachFilter.selected"
+                      (change)="
+                        i === 0
+                          ? selectAllCheckbox(filter)
+                          : toggleCheckbox(eachFilter, filter)
+                      "
+                    />
+                    <label [for]="eachFilter.label">{{
+                      i === 0 ? "All" : eachFilter.label
+                    }}</label>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #newfilters>
+            <div
+              class="cards"
+              *ngFor="let filters of savedReportsData[currentIndex].filters"
+            >
+              <div class="card title" *ngFor="let filter of filters">
+                {{ filter[0].label }}
+                <div class="items">
+                  <p *ngFor="let eachFilter of filter; let i = index">
+                    <input
+                      type="checkbox"
+                      [disabled]="isCheckboxDisabled"
+                      [id]="eachFilter.label"
+                      [checked]="eachFilter.selected"
+                      (change)="
+                        i === 0
+                          ? selectAllCheckbox(filter)
+                          : toggleCheckbox(eachFilter, filter)
+                      "
+                    />
+                    <label [for]="eachFilter.label">{{
+                      i === 0 ? "All" : eachFilter.label
+                    }}</label>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table id="download" style="display: none">
+    <thead>
+      <tr>
+        <th *ngFor="let item of downloadData">{{ item.category }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td *ngFor="let item of downloadData">
+          <ng-container *ngFor="let label of item.labels; let last = last">
+            {{ label }}{{ !last ? "\n" : "" }}
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>

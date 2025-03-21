@@ -1,0 +1,515 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <!-- <app-header></app-header> -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Title-->
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <span>Admin</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-container tableBorder">
+            <div class="table-responsive usersTableHeight" id="recent_main_div">
+              <table id="adminUsersTable">
+                <thead class="stickyHeader">
+                  <tr>
+                    <th colspan="8" class="usersTableHeader">Users</th>
+                  </tr>
+                  <tr>
+                    <th class="zeroBorderRadius">Sr. No.</th>
+                    <th class="zeroBorderRadius">Username</th>
+                    <th class="zeroBorderRadius">Email</th>
+                    <th class="zeroBorderRadius">Role</th>
+                    <th class="zeroBorderRadius">Modified By</th>
+                    <th class="zeroBorderRadius">Modified At</th>
+                    <th class="zeroBorderRadius">Status</th>
+                    <th class="zeroBorderRadius">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="isLoading">
+                    <div
+                      id="overlay1"
+                      colspan="10"
+                      style="
+                        width: 97.5%;
+                        text-align: center;
+                        border-radius: 20px;
+                      "
+                    >
+                      <div class="custom-spinner">
+                        <div class="spinner"></div>
+                      </div>
+                    </div>
+                  </tr>
+
+                  <tr *ngIf="allUsersData.length === 0 && !isLoading">
+                    <td colspan="8" class="failed_norecords">
+                      No Records Found
+                    </td>
+                  </tr>
+                  <ng-container *ngIf="!isLoading && allUsersData.length > 0">
+                    <tr
+                      class="table-row pointerCursor"
+                      *ngFor="let rData of allUsersData; let i = index"
+                      [class.active-row]="activeRowIndex === i"
+                      (click)="setActiveRow(i); openUser(rData)"
+                    >
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        <span
+                          class="mobiletbody"
+                          id="{{ rData.userEmailId }}"
+                          >{{ rData.userFullName }}</span
+                        >
+                      </td>
+                      <td>{{ rData.userEmailId }}</td>
+                      <td>{{ rData.role?.roleName }}</td>
+                      <td>{{ rData.updatedBy }}</td>
+                      <td>{{ rData.updatedAt }}</td>
+                      <td>
+                        <span
+                          class="userStatus"
+                          [ngStyle]="{
+                            'background-color':
+                              rData.dbStatus?.status === 'active'
+                                ? '#DAFCE2'
+                                : rData.dbStatus?.status === 'inactive'
+                                ? '#F9DCD5'
+                                : rData.dbStatus?.status === 'pending'
+                                ? 'yellow'
+                                : ''
+                          }"
+                        >
+                          {{
+                            rData.dbStatus
+                              ? rData.dbStatus.status.charAt(0).toUpperCase() +
+                                rData.dbStatus.status.slice(1).toLowerCase()
+                              : rData.dbStatus
+                          }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <i
+                          class="fa fa-pencil"
+                          aria-hidden="true"
+                          title="Edit"
+                          data-toggle="modal"
+                          data-target="#myModal"
+                          (click)="openModal()"
+                        ></i>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="table-responsive" id="recent_main_divmobile">
+            <div *ngIf="isLoading">
+              <div class="whiteBackground">
+                <div class="custom-spinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="allUsersData.length === 0 && !isLoading"
+              class="failed_norecords noRecordsDesktop"
+            >
+              No Records Found
+            </div>
+            <ng-container *ngIf="!isLoading && allUsersData.length > 0">
+              <div
+                class="outer-box pointerCursor"
+                *ngFor="let rData of allUsersData; let i = index"
+                [class.active-row]="activeRowIndex === i"
+                (click)="setActiveRow(i); openUser(rData)"
+              >
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Name</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody {{
+                        this.activeUser
+                          ? this.activeUser.email === rData.userEmailId
+                            ? 'activeuser'
+                            : ''
+                          : ''
+                      }}"
+                      >{{ rData.userFullName }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Email</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.userEmailId }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Role</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.role?.roleName }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Modified By</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.updatedBy }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Modified At</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.updatedAt }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Status</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody userStatus"
+                      [ngStyle]="{
+                        'background-color':
+                          rData.dbStatus?.status === 'active'
+                            ? '#DAFCE2'
+                            : rData.dbStatus?.status === 'inactive'
+                            ? '#F9DCD5'
+                            : rData.dbStatus?.status === 'pending'
+                            ? 'yellow'
+                            : ''
+                      }"
+                      >{{
+                        rData.dbStatus
+                          ? rData.dbStatus.status.charAt(0).toUpperCase() +
+                            rData.dbStatus.status.slice(1).toLowerCase()
+                          : rData.dbStatus
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Action</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody"
+                      ><i
+                        class="fa fa-pencil"
+                        aria-hidden="true"
+                        title="Edit"
+                        data-toggle="modal"
+                        data-target="#myModal"
+                      ></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div *ngIf="!isLoading">
+        <span class="line3"></span>
+        <br />
+        <div class="row dropdownBackground">
+          <div>
+            <ng-multiselect-dropdown
+              class="paymentfilters whiteBackground"
+              name="product"
+              [placeholder]="'Select Product'"
+              [data]="products"
+              [(ngModel)]="userproduct"
+              [settings]="productDropdownSettings"
+              (onSelect)="onProductChange()"
+            ></ng-multiselect-dropdown>
+          </div>
+          <div>
+            <ng-multiselect-dropdown
+              class="paymentfilters"
+              name="channel"
+              [placeholder]="'Select Channel'"
+              [data]="channels"
+              [(ngModel)]="userchannel"
+              [settings]="channelDropdownSettings"
+            ></ng-multiselect-dropdown>
+          </div>
+
+          <div>
+            <button
+              name="submit"
+              class="inputbutton disabled"
+              id="createProduct"
+              [ngClass]="{ disabled: isDisabled }"
+              [disabled]="isDisabled"
+              value="Submit"
+              (click)="addProductAndChannel()"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <br />
+        <div class="row userdata" id="mainuser">
+          <div class="col-md-12">
+            <div class="table-container tableBorder">
+              <div
+                class="table-responsive productChannelTableHeight"
+                id="recent_main_div"
+              >
+                <table>
+                  <thead class="stickyHeader">
+                    <tr>
+                      <th colspan="3" class="userHeaderDesktop">
+                        {{ activeUser ? activeUser.name : "" }}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th class="zeroBorderRadius">Products</th>
+                      <th class="zeroBorderRadius">Channels</th>
+                      <th class="zeroBorderRadius">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="this.activeUserData" class="whiteBackground">
+                    <tr *ngFor="let rData1 of this.productChannelDataByEmail">
+                      <td>
+                        <span class="mobiletbody">{{
+                          rData1.productName
+                        }}</span>
+                      </td>
+                      <td>
+                        <span class="mobiletbody">{{
+                          rData1.channelName
+                        }}</span>
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-trash pointerCursor"
+                          (click)="deleteproduct(rData1.productChannelId)"
+                          title="Delete"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody
+                    *ngIf="productChannelDataByEmail.length === 0"
+                    class="whiteBackground"
+                  >
+                    <tr>
+                      <td colspan="3" class="noRecordsBorder">
+                        <span class="mobiletbody failed_norecords">
+                          No Records Found
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="table-responsive" id="recent_main_divmobile">
+              <div class="row userHeaderMobile">
+                {{ activeUser ? activeUser.name : "" }}
+              </div>
+              <div
+                *ngIf="productChannelDataByEmail.length === 0"
+                class="failed_norecords noRecordsMobile"
+              >
+                No Records Found
+              </div>
+              <div
+                class="outer-box"
+                *ngFor="
+                  let rData1 of this.productChannelDataByEmail;
+                  let i = index
+                "
+              >
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Product</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData1.productName }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Channel</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData1.channelName }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Action</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody pointerCursor"
+                      (click)="deleteproduct(rData1.productChannelId)"
+                      title="Delete"
+                      ><i class="fa fa-trash"></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+              <div class="outer-box" *ngIf="!this.activeUserData">
+                <div class="row noRecords">
+                  <span>No result found</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="myModal"
+    class="modal fade"
+    role="dialog"
+    (hidden.bs.modal)="resetDropdownsChanged()"
+  >
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content modalPadding">
+        <div class="modal-body">
+          <div class="row bottomRadius">
+            <div class="col-md-3">
+              <label class="modalHeadings"> Name</label>
+            </div>
+            <div class="col-md-9">
+              <input
+                type="text"
+                name="name"
+                class="input adminElement disabled-field"
+                readonly
+                [(ngModel)]="clickedUserData.userFullName"
+              />
+            </div>
+          </div>
+          <div class="row bottomRadius">
+            <div class="col-md-3">
+              <label class="modalHeadings">Email</label>
+            </div>
+            <div class="col-md-9">
+              <input
+                type="text"
+                name="email"
+                class="input adminElement disabled-field"
+                readonly
+                [(ngModel)]="clickedUserData.userEmailId"
+              />
+            </div>
+          </div>
+          <div class="row bottomRadius">
+            <div class="col-md-3">
+              <label class="modalHeadings">Role</label>
+            </div>
+            <div
+              class="col-md-9"
+              *ngIf="clickedUserData && clickedUserData.role"
+            >
+              <select
+                name="role"
+                class="adminElement"
+                [(ngModel)]="clickedUserData.role.roleName"
+                (ngModelChange)="onDropdownChange()"
+              >
+                <option
+                  value="select"
+                  [disabled]="clickedUserData.role.roleName !== 'select'"
+                >
+                  Select Role
+                </option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+              </select>
+            </div>
+          </div>
+          <div class="row bottomRadius">
+            <div class="col-md-3">
+              <label class="modalHeadings">Status</label>
+            </div>
+            <div
+              class="col-md-9"
+              *ngIf="clickedUserData && clickedUserData.dbStatus"
+            >
+              <select
+                name="status"
+                class="adminElement"
+                [(ngModel)]="clickedUserData.dbStatus.status"
+                (ngModelChange)="onDropdownChange()"
+              >
+                <option
+                  value="select"
+                  [disabled]="clickedUserData.dbStatus.status !== 'select'"
+                >
+                  Select Status
+                </option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="inputbuttonclear" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="inputbutton"
+            data-dismiss="modal"
+            [class.disabled-button]="!dropdownsChanged"
+            [disabled]="!dropdownsChanged"
+            (click)="editRoleAndStatus()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

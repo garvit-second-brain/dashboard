@@ -1,0 +1,46 @@
+.zeroMargin {
+  margin: 0;
+}
+
+.bottomMargin {
+  margin-bottom: 5px;
+}
+
+.rightFloat {
+  float: right;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}
+
+.navigateProfileId {
+  cursor: pointer;
+  text-decoration: none;
+  color: blue;
+}
+
+.borderNone {
+  border: none;
+  height: 1px;
+  background: #d2c6c6;
+  margin-top: 0px;
+}
+
+.statusBackground {
+  padding: 0px 2px;
+  margin: auto;
+  border-radius: 20x;
+  width: 60%;
+  display: block;
+}
+
+.successStatus {
+  background-color: #dafce2;
+}
+
+.failedStatus {
+  background-color: #f9dcd5;
+}

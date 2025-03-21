@@ -1,0 +1,120 @@
+.noneDisplay {
+  display: none;
+}
+
+.boldFontWeight {
+  font-weight: bold;
+}
+
+.borderRadius {
+  border-radius: 20px;
+  overflow: auto;
+}
+
+.exportBackground {
+  background: #008da5 !important;
+}
+
+.flexDisplay {
+  display: flex;
+  column-gap: 10px;
+}
+
+.rightPadding {
+  padding-right: 10px;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}
+
+.whiteBackground {
+  background-color: white;
+}
+
+.displayEnd {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.topMargin {
+  margin-top: 10px;
+}
+
+.bottomMargin {
+  margin-bottom: 10px !important;
+}
+
+.relativePosition {
+  position: relative;
+}
+
+.dateinputField {
+  font-size: 12px;
+  line-height: 26px;
+  background: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.dateButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  padding: 0px;
+  border: 0px;
+  background: none;
+}
+
+.justifyCenter {
+  display: flex;
+  padding: 0;
+  justify-content: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+  display: none;
+}
+
+.noRecords {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.statusDesktop {
+  padding: 2px 20px;
+  border-radius: 20x;
+  width: 75%;
+  margin: auto;
+}
+
+.statusMobile {
+  padding: 0px 2px;
+  margin: 3px 0px;
+  border-radius: 20x;
+  width: 58%;
+}
+
+.noProductChannel {
+  border-radius: 10px;
+  background-color: #fff;
+  display: block;
+  padding: 30px 0px;
+  margin: 0px 18px !important;
+  text-align: center;
+}

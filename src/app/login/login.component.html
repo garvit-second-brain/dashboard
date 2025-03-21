@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <section class="vh-100">
+      <div class="py-5123 h-100">
+        <div class="row justify-content-center">
+          <div>
+            <div class="box2 boxPadding">
+              <div class="text-center">
+                <img src="./assets/logo.png" class="img-fluid txt1" />
+              </div>
+              <div class="text-center mb-3">
+                <span class="txt1">SIGN IN</span>
+              </div>
+              <form>
+                <div class="mb-3">
+                  <input
+                    type="email"
+                    class="form-control inputfield"
+                    placeholder="EMAIL"
+                    name="email"
+                    [(ngModel)]="email"
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    class="form-control inputfield"
+                    placeholder="ORGANIZATION"
+                    name="pass"
+                    [(ngModel)]="organization"
+                  />
+                </div>
+                <div class="text-center">
+                  <button
+                    type="submit"
+                    class="inputbutton signup_btn buttonWidth"
+                    (click)="verifyUser()"
+                    [disabled]="isLoading"
+                    [style.cursor]="isLoading ? 'default' : 'pointer'"
+                  >
+                    <span *ngIf="isLoading">
+                      <div class="custom-spinner">
+                        <div class="login-spinner"></div>
+                      </div>
+                    </span>
+                    <span *ngIf="!isLoading">Next</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

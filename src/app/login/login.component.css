@@ -1,0 +1,12 @@
+body {
+  background-image: url("../../assets/loginbackground.png");
+}
+
+.boxPadding {
+  padding: 60px;
+  padding-bottom: 0;
+}
+
+.buttonWidth {
+  width: 100px;
+}

@@ -1,0 +1,107 @@
+.usersTableHeight {
+  max-height: 250px;
+}
+
+.productChannelTableHeight {
+  max-height: 200px;
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+}
+
+.tableBorder {
+  border-radius: 20px;
+  overflow: auto;
+}
+
+.zeroBorderRadius {
+  border-radius: 0px !important;
+}
+
+.dropdownBackground {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  margin: 0px 20px !important;
+  border-radius: 15px;
+  padding: 10px;
+  align-items: center;
+  gap: 20px;
+}
+
+.usersTableHeader {
+  border-radius: 25px 25px 0px 0px;
+  padding: 12px 5px 8px 20px;
+  border: none;
+  text-align: left;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}
+
+.bottomRadius {
+  margin-bottom: 10px !important;
+}
+
+.whiteBackground {
+  background-color: white;
+}
+
+.noRecords {
+  text-align: center;
+  display: block;
+}
+
+.modalPadding {
+  padding: 20px 10px 0px 10px;
+}
+
+.userStatus {
+  padding: 2px 20px;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.noRecordsDesktop {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.noRecordsMobile {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+}
+
+.userHeaderDesktop {
+  border-radius: 25px 25px 0px 0px;
+  padding: 12px 5px 8px 20px;
+  border: none;
+  text-align: left;
+}
+
+.noRecordsBorder {
+  border-radius: 0px 0px 25px 25px !important;
+}
+
+.userHeaderMobile {
+  margin-bottom: 25px !important;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.syncButton {
+  margin-left: 20px !important;
+  background: #008da5 !important;
+}

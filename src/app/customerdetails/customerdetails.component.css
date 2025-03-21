@@ -1,0 +1,39 @@
+.zeroMargin {
+  margin: 0px;
+}
+
+.bottomMargin {
+  margin-bottom: 5px;
+}
+
+.menuCursor {
+  cursor: context-menu;
+}
+
+.borderNone {
+  border: none;
+  height: 1px;
+  background: #d2c6c6;
+  margin-top: 0px;
+}
+
+.pointerCursor {
+  cursor: pointer;
+}
+
+.rightFloat {
+  float: right;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.syncButton {
+  margin-left: 20px !important;
+  background: #008da5 !important;
+}
+
+.flexDisplay {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

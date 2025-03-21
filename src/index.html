@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/dataTables.bootstrap4.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/js/dataTables.bootstrap4.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"
+    />
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <style>
+      .legend {
+        font-size: 12px;
+      }
+      rect {
+        stroke-width: 2;
+      }
+    </style>
+
+    <meta charset="utf-8" />
+    <title>Naviga Pay Dashboard</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://kendo.cdn.telerik.com/themes/6.7.0/default/default-ocean-blue-a11y.css"
+    />
+    <script>
+      $(document).ready(function () {
+        var multipleCancelButton = new Choices(
+          "#choices-multiple-remove-button",
+          {
+            removeItemButton: true,
+            maxItemCount: 3,
+            searchResultLimit: 5,
+            renderChoiceLimit: 5,
+          }
+        );
+      });
+    </script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"
+    ></script>
+    <script type="text/javascript" src="assets/psd3.js"></script>
+    <script src="assets/script.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        setTimeout(function () {
+          $(".md-drppicker .buttons .btn:contains('Apply')").on(
+            "click",
+            function (event) {
+              if ($(".active.end-date").length === 0) {
+                alert("End date is not selected. Please select an end date.");
+                event.preventDefault();
+              }
+            }
+          );
+        }, 2000);
+
+        var multipleCancelButton = new Choices(
+          "#choices-multiple-remove-button",
+          {
+            removeItemButton: true,
+            maxItemCount: 5,
+            searchResultLimit: 5,
+            renderChoiceLimit: 5,
+          }
+        );
+      });
+    </script>
+    <script>
+      $(function () {
+        $(document).click(function (event) {
+          $(".navbar-collapse").collapse("hide");
+        });
+      });
+    </script>
+    <script>
+      $("#highcharts-rbuvvyb-0").style.width = "100% !important";
+      $(".modal-dialog").on("click tap", function (e) {
+        if ($(e.target).hasClass("modal-dialog")) {
+          $(".modal").modal("hide");
+        }
+      })(function ($) {
+        "use strict"; 
+        $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
+          template:
+            '<div class="tooltip navbar-sidenav-tooltip" role="tooltip" style="pointer-events: none;"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
+        });
+        $("#sidenavToggler").click(function (e) {
+          e.preventDefault();
+          $("body").toggleClass("sidenav-toggled");
+          $(".navbar-sidenav .nav-link-collapse").addClass("collapsed");
+          $(
+            ".navbar-sidenav .sidenav-second-level, .navbar-sidenav .sidenav-third-level"
+          ).removeClass("show");
+        });
+        $(".navbar-sidenav .nav-link-collapse").click(function (e) {
+          e.preventDefault();
+          $("body").removeClass("sidenav-toggled");
+        });
+        $(
+          "body.fixed-nav .navbar-sidenav, body.fixed-nav .sidenav-toggler, body.fixed-nav .navbar-collapse"
+        ).on("mousewheel DOMMouseScroll", function (e) {
+          var e0 = e.originalEvent,
+            delta = e0.wheelDelta || -e0.detail;
+          this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+          e.preventDefault();
+        });
+        $(document).scroll(function () {
+          var scrollDistance = $(this).scrollTop();
+          if (scrollDistance > 100) {
+            $(".scroll-to-top").fadeIn();
+          } else {
+            $(".scroll-to-top").fadeOut();
+          }
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+        $(document).on("click", "a.scroll-to-top", function (event) {
+          var $anchor = $(this);
+          $("html, body")
+            .stop()
+            .animate(
+              {
+                scrollTop: $($anchor.attr("href")).offset().top,
+              },
+              1000,
+              "easeInOutExpo"
+            );
+          event.preventDefault();
+        });
+      }); 
+      $(".k-chip-list")
+        .attr("ng-reflect-value-depth")
+        .change(function () {
+          alert();
+        });
+    </script>
+
+    <script type="text/javascript">
+      function userCheck(username) {
+        
+        $("#username").text(username);
+        $(".userCheck").show();
+      }
+
+      function updateUserRole(userRole) {
+        var adminElement = $("#adminID");
+        if (userRole == "ADMIN" || userRole == "SUPERADMIN") {
+          adminElement.show();
+        } else {
+          adminElement.hide();
+        }
+      }
+
+      $(window).click(function (e) {
+        checkStatus();
+      });
+
+      function checkStatus() {
+        var val = $(".k-input-md").attr("aria-expanded");
+        if (val == "true") {
+          $(".kendodropdown").css("transform", "rotateZ(180deg)");
+        } else {
+          $(".kendodropdown").css("transform", "none");
+        }
+      }
+
+      function kendoPlaceholder(status) {
+        if ($(".k-chip-list-md").children(".kendoPlaceholder").length === 0) {
+          $(".k-chip-list-md").append(
+            '<span class="kendoPlaceholder" id="kendoPlaceholder"></span><span class="kendodropdown"></span>'
+          );
+        }
+        if (status) {
+          $(".kendoPlaceholder").text("Operation Type");
+        } else {
+          $(".kendoPlaceholder").text("");
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

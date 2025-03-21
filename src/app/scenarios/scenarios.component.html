@@ -1,0 +1,911 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb alignCenter" *ngIf="!showDetailsTable">
+            <div class="mainHeader">
+              <li class="breadcrumb-item">
+                <span>Scenarios</span>
+              </li>
+            </div>
+            <div>
+              <button class="inputbutton addNewButton" (click)="openAddModal()">
+                + Add new
+              </button>
+            </div>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-container tableBorder" *ngIf="!showDetailsTable">
+            <div class="table-responsive" id="recent_main_div">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="zeroBorderRadius">Scenario Name</th>
+                    <th class="zeroBorderRadius">Created By</th>
+                    <th class="zeroBorderRadius">Triggers</th>
+                    <th class="zeroBorderRadius">Actions</th>
+                    <th class="zeroBorderRadius">Last Triggered</th>
+                    <th class="zeroBorderRadius">Status</th>
+                    <th class="zeroBorderRadius">Edit</th>
+                    <th class="zeroBorderRadius">Delete</th>
+                    <th class="zeroBorderRadius">Copy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="isLoading">
+                    <div
+                      id="overlay1"
+                      colspan="9"
+                      style="
+                        width: 97.5%;
+                        text-align: center;
+                        border-radius: 20px;
+                      "
+                    >
+                      <div class="custom-spinner">
+                        <div class="spinner"></div>
+                      </div>
+                    </div>
+                  </tr>
+                  <tr *ngIf="scenarioData.length === 0 && !isLoading">
+                    <td
+                      colspan="9"
+                      class="failed_norecords"
+                      style="border-radius: 0px 0px 25px 25px !important"
+                    >
+                      No Records Found
+                    </td>
+                  </tr>
+
+                  <ng-container *ngIf="!isLoading">
+                    <tr
+                      class="table-row pointerCursor"
+                      *ngFor="
+                        let scenario of scenarioData
+                          | paginate
+                            : {
+                                itemsPerPage: paginationSize,
+                                currentPage: currentPage,
+                                totalItems: scenarioData.length
+                              };
+                        let i = index
+                      "
+                    >
+                      <td>{{ scenario.name }}</td>
+                      <td>{{ scenario.modifiedBy }}</td>
+                      <td></td>
+                      <td>
+                        {{
+                          scenario.thresholdAction?.thresholdActionDescr || ""
+                        }}
+                      </td>
+                      <td></td>
+                      <td>
+                        {{
+                          scenario.isActive === "yes" ? "Active" : "Inactive"
+                        }}
+                      </td>
+
+                      <td>
+                        <i
+                          class="fa fa-pencil iconsize zeroPadding"
+                          (click)="editScenario(scenario, $event, 'edit')"
+                        ></i>
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-trash iconsize zeroPadding"
+                          (click)="deleteScenario(scenario.scenarioId, $event)"
+                        ></i>
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-clone iconsize zeroPadding"
+                          (click)="editScenario(scenario, $event, 'copy')"
+                        ></i>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <div class="alignCenter" *ngIf="scenarioData.length > 0">
+                <div></div>
+                <div class="topMargin">
+                  <pagination-controls
+                    (pageChange)="handlePageChange($event)"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADD MODAL -->
+          <div class="custom-modal-container">
+            <div
+              id="addNewScenarioModal"
+              class="custom-modal"
+              *ngIf="showAddModal"
+            >
+              <div class="custom-modal-content">
+                <!-- Header -->
+                <h2 class="modal-header">
+                  {{
+                    mode === "add"
+                      ? "Add New Scenario"
+                      : mode === "edit"
+                      ? "Edit Scenario"
+                      : "Copy Scenario"
+                  }}
+                </h2>
+
+                <!-- Section Toggle Buttons -->
+                <div class="section-buttons">
+                  <button
+                    class="section-button"
+                    [class.active]="activeSection === 'basic'"
+                    (click)="switchSection('basic')"
+                  >
+                    Basic
+                  </button>
+
+                  <button
+                    class="section-button"
+                    [class.active]="activeSection === 'sources'"
+                    (click)="switchSection('sources')"
+                  >
+                    Sources
+                  </button>
+                  <button
+                    class="section-button"
+                    [class.active]="activeSection === 'triggers'"
+                    (click)="switchSection('triggers')"
+                  >
+                    Triggers
+                  </button>
+                  <button
+                    class="section-button"
+                    [class.active]="activeSection === 'actions'"
+                    (click)="switchSection('actions')"
+                  >
+                    Actions
+                  </button>
+                </div>
+
+                <!-- Basic Section -->
+                <div *ngIf="activeSection === 'basic'">
+                  <form style="padding: 10px">
+                    <div class="form-row zeroMargin">
+                      <div class="form-label flexDisplay">
+                        <label for="enable">Status </label>
+                        <span *ngIf="errors.isActive" class="error-text"
+                          >*</span
+                        >
+                      </div>
+                      <div class="form-field" style="border: none">
+                        <select
+                          id="enable"
+                          [(ngModel)]="newScenario.isActive"
+                          name="enable"
+                          class="form-field"
+                          [ngClass]="{ 'error-border': errors.isActive }"
+                        >
+                          <option value="yes">Active</option>
+                          <option value="no">Inactive</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row zeroMargin">
+                      <div class="form-label flexDisplay">
+                        <label for="scenarioName">Scenario Name: </label>
+                        <span class="error-text" *ngIf="errors.name">*</span>
+                      </div>
+                      <div class="form-field" style="border: none">
+                        <input
+                          type="text"
+                          id="scenarioName"
+                          [(ngModel)]="newScenario.name"
+                          name="scenarioName"
+                          style="width: 100%; border-radius: 20px"
+                          [ngClass]="{ 'error-border': errors.name }"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Sources Section -->
+                <div *ngIf="activeSection === 'sources'">
+                  <form style="padding: 10px">
+                    <div class="form-row">
+                      <div class="form-label flexDisplay">
+                        <label for="vendor">Vendor</label>
+                        <span
+                          class="error-text"
+                          *ngIf="errors.selectedVendorItems"
+                          >*</span
+                        >
+                      </div>
+                      <div class="dropdown-wrapper">
+                        <ng-multiselect-dropdown
+                          class="paymentfilters"
+                          [ngClass]="{
+                            'error-border': errors.selectedVendorItems
+                          }"
+                          name="vendorName"
+                          [placeholder]="'Vendor Type'"
+                          [settings]="vendorSettings"
+                          [data]="vendorsData"
+                          (onSelect)="onVendorItemSelect($event)"
+                          (onDeSelect)="onVendorItemDeSelect($event)"
+                          (onSelectAll)="onVendorSelectAll()"
+                          (onDeSelectAll)="onVendorDeSelectAll()"
+                          [(ngModel)]="selectedVendorItems"
+                        ></ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-label flexDisplay">
+                        <label for="product">Product</label>
+                        <span
+                          class="error-text"
+                          *ngIf="errors.selectedProductsItems"
+                          >*</span
+                        >
+                      </div>
+                      <div class="dropdown-wrapper">
+                        <ng-multiselect-dropdown
+                          class="paymentfilters"
+                          [ngClass]="{
+                            'error-border': errors.selectedProductsItems
+                          }"
+                          name="ProductName"
+                          [placeholder]="'Products'"
+                          [settings]="productSettings"
+                          [data]="productsData"
+                          (onSelect)="onProductItemSelect($event)"
+                          (onDeSelect)="onProductItemDeSelect($event)"
+                          (onSelectAll)="onProductSelectAll()"
+                          (onDeSelectAll)="onProductDeSelectAll()"
+                          [(ngModel)]="selectedProductsItems"
+                        ></ng-multiselect-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-label flexDisplay">
+                        <label for="channel">Channel</label>
+                        <span
+                          class="error-text"
+                          *ngIf="errors.selectedChannelsItems"
+                          >*</span
+                        >
+                      </div>
+                      <div class="dropdown-wrapper">
+                        <ng-multiselect-dropdown
+                          class="paymentfilters"
+                          [ngClass]="{
+                            'error-border': errors.selectedChannelsItems
+                          }"
+                          name="ChannelName"
+                          [placeholder]="'Channels'"
+                          [settings]="channelSettings"
+                          [data]="channelsData"
+                          (onSelect)="onChannelItemSelect($event)"
+                          (onDeSelect)="onChannelItemDeSelect($event)"
+                          (onSelectAll)="onChannelSelectAll()"
+                          (onDeSelectAll)="onChannelDeSelectAll()"
+                          [(ngModel)]="selectedChannelsItems"
+                        ></ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Triggers Section -->
+                <div *ngIf="activeSection === 'triggers'">
+                  <div class="trigger-section">
+                    <div class="form-row">
+                      <div class="form-label flexDisplay">
+                        <label for="source">Source</label>
+                        <span class="error-text" *ngIf="errors.source">*</span>
+                      </div>
+                      <select
+                        id="source"
+                        class="form-field"
+                        (change)="switchSource($event)"
+                        [(ngModel)]="newScenario.source"
+                        name="source"
+                        [ngClass]="{
+                          'error-border': errors.source
+                        }"
+                      >
+                        <option value="transactions">Transactions</option>
+                        <option value="vendorStatus">Vendor Status</option>
+                      </select>
+                    </div>
+
+                    <div
+                      *ngIf="sourceValue === 'transactions'"
+                      id="transactionsUI"
+                      class="conditional-ui"
+                    >
+                      <div class="form-row flexDisplay">
+                        <div class="form-label flexDisplay">
+                          <label for="schedule" style="flex: 1">
+                            Schedule
+                          </label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.startTime || errors.endTime"
+                            >*</span
+                          >
+                        </div>
+
+                        <div
+                          style="
+                            display: flex;
+                            flex-direction: column;
+                            gap: 5px;
+                            flex: 2;
+                          "
+                        >
+                          <div class="row">
+                            <div class="checkbox-container">
+                              <input
+                                type="checkbox"
+                                id="allDay"
+                                [(ngModel)]="allDay"
+                                (change)="onAllDayChange()"
+                                class="form-field"
+                              />
+                              <label for="allDay" class="inline-label"
+                                >All Day</label
+                              >
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div
+                              class="time-range"
+                              style="
+                                display: flex;
+                                align-items: center;
+                                gap: 20px;
+                              "
+                            >
+                              <input
+                                type="time"
+                                id="startTime"
+                                class="form-field time-input"
+                                [(ngModel)]="newScenario.startTime"
+                                (change)="onTimeChange()"
+                                style="flex: 1"
+                                [ngClass]="{
+                                  'error-border': errors.startTime
+                                }"
+                              />
+
+                              <span class="arrow" style="padding: 0 10px"
+                                >→</span
+                              >
+                              <input
+                                type="time"
+                                id="endTime"
+                                class="form-field time-input"
+                                [(ngModel)]="newScenario.endTime"
+                                (change)="onTimeChange()"
+                                style="flex: 1"
+                                [ngClass]="{
+                                  'error-border': errors.endTime
+                                }"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="paymentType">Payment Type</label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.selectedPaymentItems"
+                            >*</span
+                          >
+                        </div>
+                        <div class="dropdown-wrapper">
+                          <ng-multiselect-dropdown
+                            class="paymentfilters"
+                            [ngClass]="{
+                              'error-border': errors.selectedPaymentItems
+                            }"
+                            name="paymentName"
+                            [placeholder]="'Payment Type'"
+                            [settings]="paymentTypeSettings"
+                            [data]="paymentsTypeData"
+                            (onSelect)="onPaymentTypeItemSelect($event)"
+                            (onDeSelect)="onPaymentTypeItemDeSelect($event)"
+                            (onSelectAll)="onPaymentTypeSelectAll()"
+                            (onDeSelectAll)="onPaymentTypeDeSelectAll()"
+                            [(ngModel)]="selectedPaymentItems"
+                          ></ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="operationType">Operation Type</label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.selectedOperationItems"
+                            >*</span
+                          >
+                        </div>
+                        <div class="dropdown-wrapper">
+                          <ng-multiselect-dropdown
+                            class="paymentfilters"
+                            [ngClass]="{
+                              'error-border': errors.selectedOperationItems
+                            }"
+                            name="operationTypeName"
+                            [placeholder]="'Operation Type'"
+                            [settings]="operationTypeSettings"
+                            [data]="operationTypeData"
+                            (onSelect)="onOperationTypeItemSelect($event)"
+                            (onDeSelect)="onOperationTypeItemDeSelect($event)"
+                            (onSelectAll)="onOperationTypeSelectAll()"
+                            (onDeSelectAll)="onOperationTypeDeSelectAll()"
+                            [(ngModel)]="selectedOperationItems"
+                          ></ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="operationStatus">Operation Status</label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.selectedStatusItems"
+                            >*</span
+                          >
+                        </div>
+                        <div class="dropdown-wrapper">
+                          <ng-multiselect-dropdown
+                            class="paymentfilters"
+                            [ngClass]="{
+                              'error-border': errors.selectedStatusItems
+                            }"
+                            name="paymentStatus"
+                            [placeholder]="'Status'"
+                            [settings]="paymentStatusSettings"
+                            [data]="paymentStatusData"
+                            (onSelect)="onStatusItemSelect($event)"
+                            (onDeSelect)="onStatusItemDeSelect($event)"
+                            (onSelectAll)="onStatusSelectAll()"
+                            (onDeSelectAll)="onStatusDeSelectAll()"
+                            [(ngModel)]="selectedStatusItems"
+                          ></ng-multiselect-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="duration">Duration</label>
+                          <span class="error-text" *ngIf="errors.durationValue">
+                            *
+                          </span>
+                        </div>
+
+                        <div class="input-container">
+                          <input
+                            type="number"
+                            id="duration"
+                            class="form-field"
+                            [(ngModel)]="durationValue"
+                            (ngModelChange)="updateDurationValue()"
+                            min="0"
+                            [ngClass]="{
+                              'error-border': errors.durationValue
+                            }"
+                          />
+                        </div>
+
+                        <select
+                          [(ngModel)]="durationUnit"
+                          class="form-field"
+                          (ngModelChange)="updateDurationValue()"
+                        >
+                          <option value="sec">seconds</option>
+                          <option value="min">minutes</option>
+                          <option value="hr">hours</option>
+                        </select>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="threshold">Threshold</label>
+                          <span class="error-text" *ngIf="errors.thresholdValue"
+                            >*</span
+                          >
+                        </div>
+                        <div class="input-container" style="margin-left: 7%">
+                          <select
+                            id="threshold"
+                            class="form-field"
+                            [(ngModel)]="thresholdSign"
+                            (ngModelChange)="updateThresholdSign()"
+                            [ngClass]="{
+                              'error-border': errors.thresholdSign
+                            }"
+                          >
+                            <option value="le">&lt;=</option>
+                            <option value="lt">&lt;</option>
+                            <option value="eq">=</option>
+                            <option value="gt">&gt;</option>
+                            <option value="ge">&gt;=</option>
+                          </select>
+                        </div>
+                        <input
+                          type="number"
+                          class="form-field"
+                          [(ngModel)]="thresholdValue"
+                          (ngModelChange)="updateThresholdValue()"
+                          min="0"
+                          [ngClass]="{
+                            'error-border': errors.thresholdValue
+                          }"
+                        />
+                      </div>
+                    </div>
+
+                    <div
+                      *ngIf="sourceValue === 'vendorStatus'"
+                      id="vendorStatusUI"
+                      class="conditional-ui"
+                    >
+                      <div class="form-row">
+                        <div class="form-label flexDisplay">
+                          <label for="vendorStatus">Status</label>
+                          <span class="error-text" *ngIf="errors.vendorStatus">
+                            *
+                          </span>
+                        </div>
+
+                        <select
+                          id="vendorStatus"
+                          name="vendorStatus"
+                          class="form-field"
+                          [(ngModel)]="newScenario.vendorStatus"
+                          [ngClass]="{
+                            'error-border': errors.vendorStatus
+                          }"
+                        >
+                          <option value="both">Both</option>
+                          <option value="up">Up</option>
+                          <option value="down">Down</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div *ngIf="activeSection === 'actions'">
+                  <form style="padding: 10px">
+                    <div
+                      class="form-row zeroMargin"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        margin-top: 5px;
+                      "
+                    >
+                      <div class="form-label flexDisplay" style="width: 100%">
+                        <label style="margin-left: 13px" for="templateName"
+                          >Template Name</label
+                        >
+                        <span
+                          class="error-text"
+                          *ngIf="errors.templateNameInput"
+                        >
+                          *</span
+                        >
+                      </div>
+                      <div class="form-field" style="width: 100%; border: none">
+                        <input
+                          type="text"
+                          id="templateNameInput"
+                          name="templateNameInput"
+                          [(ngModel)]="templateNameInput"
+                          placeholder="Enter template name"
+                          style="
+                            border-radius: 20px;
+                            padding: 8px;
+                            box-sizing: border-box;
+                          "
+                          [ngClass]="{
+                            'error-border': errors.templateNameInput
+                          }"
+                        />
+                      </div>
+                    </div>
+
+                    <div
+                      class="form-row zeroMargin"
+                      style="display: flex; flex-direction: column; gap: 0"
+                    >
+                      <div
+                        class="form-label"
+                        style="
+                          width: 100%;
+                          display: flex;
+                          justify-content: space-around;
+                          align-items: center;
+                          gap: 20%;
+                        "
+                      >
+                        <div class="flexDisplay">
+                          <label for="emailSubject">Subject Line</label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.emailSubjectInput"
+                            >*</span
+                          >
+                        </div>
+
+                        <select
+                          style="width: 50%"
+                          class="form-select w-auto"
+                          id="insertVariable"
+                          (change)="insertVariable($event, 'subject')"
+                        >
+                          <option selected disabled value="">
+                            ❌ Insert Variable
+                          </option>
+                          <option value="eventDate">📅 Event Date</option>
+                          <option value="eventTime">⏰ Event Time</option>
+                          <option value="eventName">❌ Event Name</option>
+                          <option value="recipientName">
+                            ❌ Recipient Name
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-field" style="width: 100%; border: none">
+                        <input
+                          type="text"
+                          id="emailSubjectInput"
+                          name="emailSubjectInput"
+                          placeholder="Enter email subject"
+                          [(ngModel)]="emailSubjectInput"
+                          style="
+                            border-radius: 20px;
+                            padding: 8px;
+                            box-sizing: border-box;
+                          "
+                          [ngClass]="{
+                            'error-border': errors.emailSubjectInput
+                          }"
+                        />
+                      </div>
+                    </div>
+
+                    <div
+                      class="form-row zeroMargin"
+                      style="display: flex; flex-direction: column; gap: 0"
+                    >
+                      <div
+                        class="form-label"
+                        style="
+                          width: 100%;
+                          display: flex;
+                          justify-content: space-around;
+                          align-items: center;
+                          gap: 20%;
+                        "
+                      >
+                        <div class="flexDisplay">
+                          <label for="emailContent">Email Content</label>
+                          <span
+                            class="error-text"
+                            *ngIf="errors.emailContentInput"
+                            >*</span
+                          >
+                        </div>
+
+                        <select
+                          style="width: 50%"
+                          class="form-select w-auto"
+                          id="insertVariable"
+                          (change)="insertVariable($event, 'content')"
+                        >
+                          <option selected disabled value="">
+                            ❌ Insert Variable
+                          </option>
+                          <option value="eventDate">📅 Event Date</option>
+                          <option value="eventTime">⏰ Event Time</option>
+                          <option value="eventName">❌ Event Name</option>
+                          <option value="recipientName">
+                            ❌ Recipient Name
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-field" style="width: 100%; border: none">
+                        <textarea
+                          id="emailContentInput"
+                          name="emailContentInput"
+                          placeholder="Write your email content here..."
+                          [(ngModel)]="emailContentInput"
+                          style="
+                            width: 100%;
+                            height: 150px;
+                            border-radius: 20px;
+                            padding: 10px;
+                            resize: vertical;
+                            box-sizing: border-box;
+                            border: 1px solid #ccc;
+                          "
+                          [ngClass]="{
+                            'error-border': errors.emailContentInput
+                          }"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="inputbuttonclear"
+                    (click)="closeAddModal()"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="inputbutton"
+                    (click)="saveNewScenario()"
+                  >
+                    {{
+                      mode === "add"
+                        ? "Save"
+                        : mode === "edit"
+                        ? "Update"
+                        : "Copy"
+                    }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="table-container tableBorder" *ngIf="showDetailsTable">
+            <div class="table-responsive" id="recent_main_div">
+              <table>
+                <thead>
+                  <tr>
+                    <th
+                      colspan="8"
+                      class="scenariosTableHeader"
+                      style="font-size: 16px"
+                    >
+                      {{ selectedScenario.name }}
+                    </th>
+                  </tr>
+
+                  <tr>
+                    <th class="zeroBorderRadius">Triggered Date & Time</th>
+                    <th class="zeroBorderRadius">Triggered Metric</th>
+                    <th class="zeroBorderRadius">Action Taken</th>
+                    <th class="zeroBorderRadius">Actions</th>
+                    <th class="zeroBorderRadius">Recipient(s)</th>
+                    <th class="zeroBorderRadius">Action Status</th>
+                    <th class="zeroBorderRadius">Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="isLoadingDetails">
+                    <td
+                      id="overlay1"
+                      colspan="7"
+                      style="
+                        width: 97.5%;
+                        text-align: center;
+                        border-radius: 20px;
+                      "
+                    >
+                      <div class="custom-spinner">
+                        <div class="spinner"></div>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr
+                    *ngIf="
+                      !selectedScenario.thresholdAction && !isLoadingDetails
+                    "
+                  >
+                    <td
+                      colspan="7"
+                      class="failed_norecords"
+                      style="border-radius: 0px 0px 25px 25px !important"
+                    >
+                      No Records Found
+                    </td>
+                  </tr>
+
+                  <ng-container *ngIf="!isLoadingDetails">
+                    <tr
+                      class="table-row pointerCursor"
+                      *ngFor="
+                        let transaction of selectedScenario?.transactions
+                          | paginate
+                            : {
+                                itemsPerPage: paginationSizeDetails,
+                                currentPage: currentPageDetails,
+                                totalItems:
+                                  selectedScenario?.transactions.length
+                              }
+                      "
+                    >
+                      <td>{{ transaction.dateTime }}</td>
+                      <td>{{ transaction.metric }}</td>
+                      <td>{{ transaction.actionTaken }}</td>
+                      <td>{{ transaction.actions }}</td>
+                      <td>{{ transaction.recipients }}</td>
+                      <td>{{ transaction.actionStatus }}</td>
+                      <td>{{ transaction.remarks }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+
+              <div class="alignCenter topMargin">
+                <div>
+                  <button
+                    name="submit"
+                    class="inputbutton pointerCursor"
+                    value="search"
+                    (click)="goBack()"
+                  >
+                    Back
+                  </button>
+                </div>
+                <div>
+                  <pagination-controls
+                    *ngIf="selectedScenario?.transactions?.length"
+                    (pageChange)="handlePageChangeDetails($event)"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

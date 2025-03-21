@@ -1,0 +1,570 @@
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+</head>
+<style>
+  .fa-pen:before {
+    content: "\f080";
+  }
+</style>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <!-- <app-header></app-header> -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Title-->
+      <div class="filter_row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <span>Payments</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <!-- table data -->
+      <div class="filter_row">
+        <div class="col-md-12">
+          <div class="filterdiv">
+            <span class="" id="filtertext">Filter</span>
+            <div class="noneDisplay" id="filtercontent">
+              <div class="filter_row bottomMargin">
+                <div class="paymenteachfilter">
+                  <div class="relativePosition">
+                    <input
+                      type="text"
+                      class="dateinputField"
+                      #inf
+                      ngxDaterangepickerMd
+                      startKey="start"
+                      endKey="end"
+                      [showCustomRangeLabel]="true"
+                      [linkedCalendars]="true"
+                      [(ngModel)]="selected"
+                      placeholder="Choose date"
+                      name="daterange"
+                      [ranges]="ranges"
+                      readonly
+                      [alwaysShowCalendars]="true"
+                      (ngModelChange)="onFilterChange()"
+                    />
+                    <button
+                      (click)="openDatepicker(inf)"
+                      class="ngx-daterangepicker-action calendar_icon_button dateButton"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="paymentName"
+                    [placeholder]="'Payment Type'"
+                    [settings]="paymentTypeSettings"
+                    [data]="paymentsTypeData"
+                    (onSelect)="onPaymentTypeItemSelect($event)"
+                    (onDeSelect)="onPaymentTypeItemDeSelect($event)"
+                    (onSelectAll)="onPaymentTypeSelectAll()"
+                    (onDeSelectAll)="onPaymentTypeDeSelectAll()"
+                    [(ngModel)]="selectedPaymentItems"
+                  ></ng-multiselect-dropdown>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="paymentStatus"
+                    [placeholder]="'Status'"
+                    [settings]="paymentStatusSettings"
+                    [data]="paymentStatusData"
+                    (onSelect)="onStatusItemSelect($event)"
+                    (onDeSelect)="onStatusItemDeSelect($event)"
+                    (onSelectAll)="onStatusSelectAll()"
+                    (onDeSelectAll)="onStatusDeSelectAll()"
+                    [(ngModel)]="selectedStatusItems"
+                  >
+                  </ng-multiselect-dropdown>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="vendorName"
+                    [placeholder]="'Vendor Type'"
+                    [settings]="vendorSettings"
+                    [data]="vendorsData"
+                    (onSelect)="onVendorItemSelect($event)"
+                    (onDeSelect)="onVendorItemDeSelect($event)"
+                    (onSelectAll)="onVendorSelectAll()"
+                    (onDeSelectAll)="onVendorDeSelectAll()"
+                    [(ngModel)]="selectedVendorItems"
+                  ></ng-multiselect-dropdown>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="ProductName"
+                    [placeholder]="'Products'"
+                    [settings]="productSettings"
+                    [data]="productsData"
+                    (onSelect)="onProductItemSelect($event)"
+                    (onDeSelect)="onProductItemDeSelect($event)"
+                    (onSelectAll)="onProductSelectAll()"
+                    (onDeSelectAll)="onProductDeSelectAll()"
+                    [(ngModel)]="selectedProductsItems"
+                  ></ng-multiselect-dropdown>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="ChannelName"
+                    [placeholder]="'Channels'"
+                    [settings]="channelSettings"
+                    [data]="channelsData"
+                    (onSelect)="onChannelItemSelect($event)"
+                    (onDeSelect)="onChannelItemDeSelect($event)"
+                    (onSelectAll)="onChannelSelectAll()"
+                    (onDeSelectAll)="onChannelDeSelectAll()"
+                    [(ngModel)]="selectedChannelsItems"
+                  ></ng-multiselect-dropdown>
+                </div>
+                <div class="paymenteachfilter">
+                  <input
+                    [(ngModel)]="profileIdValue"
+                    type="text"
+                    class="input inputSearch"
+                    placeholder="Search by Profile ID"
+                  />
+                </div>
+
+                <div class="paymenteachfilter">
+                  <input
+                    [(ngModel)]="transIdValue"
+                    type="text"
+                    class="input inputSearch"
+                    placeholder="Search by Transaction ID"
+                  />
+                </div>
+
+                <div class="paymenteachfilter">
+                  <ng-multiselect-dropdown
+                    class="paymentfilters"
+                    name="CardName"
+                    [placeholder]="'Card Type'"
+                    [settings]="cardTypeSettings"
+                    [data]="cardTypesData"
+                    (onSelect)="onCardTypeItemSelect($event)"
+                    (onDeSelect)="onCardTypeItemDeSelect($event)"
+                    (onSelectAll)="onCardTypeSelectAll()"
+                    (onDeSelectAll)="onCardTypeDeSelectAll()"
+                    [(ngModel)]="selectedCardItems"
+                  ></ng-multiselect-dropdown>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <kendo-multiselecttree
+                    [kendoMultiSelectTreeHierarchyBinding]="operationTypes"
+                    kendoMultiSelectTreeExpandable
+                    childrenField="subCategories"
+                    [textField]="['categoryName', 'subCategoryName']"
+                    [valueField]="['categoryId', 'subCategoryId']"
+                    [valueDepth]="[1]"
+                    [(ngModel)]="operationAndTransactionsType"
+                    [value]="filtervalue"
+                    [tagMapper]="tagMapper"
+                    [size]="operationSize"
+                    [rounded]="rounded"
+                    [fillMode]="fillMode"
+                    (ngModelChange)="onSelectedKeysChange()"
+                  >
+                  </kendo-multiselecttree>
+                </div>
+
+                <div class="paymenteachfilter">
+                  <div class="filter_row">
+                    <div class="col-md-6 col-xs-6 justifyCenter">
+                      <div class="dropdown">
+                        <button
+                          class="inputbutton dropdown-toggle exportBackground"
+                          type="button"
+                          id="exportMenu"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          [class.disabled]="
+                            responseData.length === 0 || isLoading
+                          "
+                          [disabled]="responseData.length === 0 || isLoading"
+                        >
+                          <div class="flexDisplay">
+                            <div><span class="nav-link-text">Export</span></div>
+                            <div
+                              *ngIf="downloading"
+                              class="export-custom-spinner"
+                            >
+                              <div class="export-spinner"></div>
+                            </div>
+                          </div>
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="exportMenu">
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            value="currentPage"
+                            (click)="exportExcel()"
+                          >
+                            <i
+                              class="fa fa-download rightPadding"
+                              aria-hidden="true"
+                            ></i>
+                            <span class="nav-link-text">Current Page</span>
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            value="allRecords"
+                            (click)="exportExcelAll()"
+                          >
+                            <i
+                              class="fa fa-download rightPadding"
+                              aria-hidden="true"
+                            ></i>
+                            <span class="nav-link-text">All Records</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="paymenteachfilter">
+                  <div class="flex">
+                    <div class="col-md-6 col-xs-6 grid">
+                      <button
+                        name="submit"
+                        class="inputbuttonclear pointerCursor"
+                        value="clear"
+                        (click)="handleResetFilters()"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <div class="col-md-6 col-xs-6 grid">
+                      <button
+                        name="submit"
+                        class="inputbutton pointerCursor"
+                        value="search"
+                        (click)="handleClick()"
+                      >
+                        Search
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <i
+              class="fa fa-solid fa-chevron-down accordionarrow"
+              id="filterdownarrow"
+              (click)="toggleDisplayDiv()"
+            ></i>
+            <i
+              class="fa fa-solid fa-chevron-down accordionarrow rotate180"
+              id="filteruparrow"
+              (click)="togglefilterDisplayDiv()"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="filter_row noProductChannel" *ngIf="channelItems.length == 0">
+        <span class="boldFontWeight"
+          >No Product Channel are assigned to this user</span
+        >
+      </div>
+      <div class="filter_row" *ngIf="channelItems.length > 0">
+        <div class="col-md-12">
+          <div class="table-container borderRadius">
+            <div class="table-responsive" id="recent_main_div">
+              <table id="download">
+                <thead>
+                  <tr>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Transaction ID</th>
+                    <th>Operation Type</th>
+                    <th>Transaction Type</th>
+                    <th>Vendor</th>
+                    <th>Payment Type</th>
+                    <th>Card Type</th>
+                    <th>Product</th>
+                    <th>Channel</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="isLoading">
+                    <div
+                      id="overlay1"
+                      colspan="10"
+                      style="
+                        width: 97.5%;
+                        text-align: center;
+                        border-radius: 20px;
+                      "
+                    >
+                      <div class="custom-spinner">
+                        <div class="spinner"></div>
+                      </div>
+                    </div>
+                  </tr>
+
+                  <tr
+                    *ngIf="
+                      (responseData.length === 0 &&
+                        !showErrorMessage &&
+                        !isLoading) ||
+                      showErrorMessage
+                    "
+                  >
+                    <td colspan="11" class="failed_norecords">
+                      No Records Found
+                    </td>
+                  </tr>
+
+                  <ng-container
+                    *ngIf="
+                      !isLoading && !showErrorMessage && responseData.length > 0
+                    "
+                  >
+                    <tr
+                      class="table-row"
+                      *ngFor="
+                        let rData of responseData
+                          | paginate
+                            : {
+                                itemsPerPage: paginationSize,
+                                currentPage: paginationData.currentPage,
+                                totalItems: paginationData.totalRecord
+                              }
+                      "
+                      (click)="navigateToPaymentDetails(rData.indexId)"
+                    >
+                      <td>
+                        <span class="mobiletbody">{{ rData.amount }}</span>
+                      </td>
+                      <td>
+                        <span
+                          class="statusDesktop"
+                          [ngStyle]="{
+                            'background-color':
+                              rData.status === 'Succeeded'
+                                ? '#DAFCE2'
+                                : rData.status != 'Succeeded'
+                                ? '#F9DCD5'
+                                : ''
+                          }"
+                          >{{ rData.status }}</span
+                        >
+                      </td>
+
+                      <td>
+                        <span
+                          class="mobiletbody"
+                          *ngIf="rData.transactionId === ''"
+                          >Not Applicable</span
+                        >
+                        <span
+                          class="mobiletbody"
+                          *ngIf="rData.transactionId != ''"
+                          >{{ rData.transactionId }}</span
+                        >
+                      </td>
+                      <td>{{ rData.operationType }}</td>
+                      <td>{{ rData.transType }}</td>
+                      <td>{{ rData.vendor }}</td>
+                      <td>{{ rData.paymentType }}</td>
+                      <td>{{ rData.cardType }}</td>
+                      <td>{{ rData.productName }}</td>
+                      <td>{{ rData.channelName }}</td>
+                      <td>{{ rData.date }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-responsive borderRadius" id="recent_main_divmobile">
+            <div *ngIf="isLoading">
+              <div class="whiteBackground">
+                <div class="custom-spinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                (responseData.length === 0 &&
+                  !showErrorMessage &&
+                  !isLoading) ||
+                showErrorMessage
+              "
+              class="failed_norecords noRecords"
+            >
+              No Records Found
+            </div>
+            <ng-container
+              *ngIf="!isLoading && !showErrorMessage && responseData.length > 0"
+            >
+              <div
+                class="outer-box table-row"
+                *ngFor="let rData of responseData"
+                (click)="navigateToPaymentDetails(rData.indexId)"
+              >
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Amount</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody boldFontWeight"
+                      *ngIf="rData.amount === null"
+                      >0.00</span
+                    >
+                    <span
+                      class="mobiletbody boldFontWeight"
+                      *ngIf="rData.amount"
+                      >{{ rData.amount }}</span
+                    >
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Status</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span
+                      class="mobiletbody statusMobile"
+                      [ngStyle]="{
+                        'background-color':
+                          rData.status === 'Succeeded'
+                            ? '#DAFCE2'
+                            : rData.status != 'Succeeded'
+                            ? '#F9DCD5'
+                            : ''
+                      }"
+                      >{{ rData.status }}</span
+                    >
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Transaction ID</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody" *ngIf="rData.transactionId === ''"
+                      >Not Applicable</span
+                    >
+                    <span
+                      class="mobiletbody"
+                      *ngIf="rData.transactionId != ''"
+                      >{{ rData.transactionId }}</span
+                    >
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Profile ID</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.profileId }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Operation Type</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.operationType }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Vendor Type</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.vendor }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Payment Type</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.paymentType }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Card Type</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.cardType }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Product</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.productName }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Channel</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.channelName }}</span>
+                  </div>
+                </div>
+                <div class="responsive_row">
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobilethead">Date</span>
+                  </div>
+                  <div class="col-xs-6 mobiletd">
+                    <span class="mobiletbody">{{ rData.date }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div
+            *ngIf="!isLoading && !showErrorMessage && responseData.length > 0"
+            class="displayEnd"
+          >
+            <div class="topMargin">
+              <pagination-controls
+                (pageChange)="handlePageChange($event)"
+              ></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</body>

@@ -1,0 +1,152 @@
+.buttons-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.table-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-table {
+  background-color: #ffffff;
+  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.flex {
+  display: flex;
+  column-gap: 20px;
+}
+
+.flex button {
+  text-align: center;
+  border-radius: 25px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  line-height: 24px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.selectAll {
+  border: 0.5px solid #000033;
+  color: #000033;
+  background-color: #ffffff;
+}
+
+input[type="checkbox"] {
+  accent-color: black;
+}
+
+.clearAll {
+  background-color: #eeeeee;
+  color: #000033;
+  border: none;
+}
+
+.download {
+  color: white;
+  border: none;
+  background-color: #000033;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button {
+  color: white;
+  border: none;
+  background-color: #000033;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.title {
+  color: #000000;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  width: 23%;
+}
+
+.flex div {
+  padding-left: 15px;
+}
+
+p {
+  color: #000000;
+  font-size: 15px;
+  font-weight: lighter;
+  margin-bottom: 5px;
+  display: flex;
+  column-gap: 5px;
+}
+
+i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+label {
+  color: #000000;
+  font-size: 12px;
+  font-weight: lighter;
+  margin-bottom: 0;
+  margin-left: 10px;
+}
+
+.items {
+  margin-top: 10px;
+}
+
+.inactiveColor {
+  color: #d9d9d9;
+}
+
+.activeColor {
+  color: black;
+}
+
+.highlightName {
+  background-color: #d9d9d9;
+  padding: 2px 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+tr:last-child td:first-child {
+  border-radius: 0;
+}
+
+@media (max-width: 992px) {
+  .cards {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,228 @@
+.alignCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mainHeader {
+  flex: 1;
+}
+
+.addNewButton {
+  margin-left: 20px !important;
+  background: #008da5 !important;
+}
+
+.zeroBorderRadius {
+  border-radius: 0px !important;
+}
+
+.tableBorder {
+  border-radius: 20px;
+  overflow: auto;
+}
+
+.scenariosTableHeader {
+  border-radius: 25px 25px 0px 0px;
+  padding: 12px 5px 8px 20px;
+  border: none;
+  text-align: left;
+}
+
+.topMargin {
+  margin-top: 10px;
+}
+
+.custom-modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-container .custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20000;
+}
+
+.custom-modal-container .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.custom-modal-container .custom-modal-content {
+  position: relative;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px;
+  width: 50%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-modal-container .modal-header {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.custom-modal-container .section-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.custom-modal-container .section-button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: grey;
+  border-bottom: 2px solid transparent;
+}
+
+.custom-modal-container .section-button.active {
+  font-weight: bold;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.custom-modal-container .section-button:hover {
+  color: darkgrey;
+}
+
+.custom-modal-container .form-label {
+  flex: 1;
+  text-align: left;
+}
+
+.custom-modal-container .trigger-section {
+  padding: 20px;
+}
+
+.custom-modal-container .form-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.custom-modal-container .form-field {
+  flex: 2;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.custom-modal-container .time-range {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.custom-modal-container .time-input {
+  padding: 4px;
+}
+
+.custom-modal-container .arrow {
+  font-weight: bold;
+}
+
+.custom-modal-container .checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-modal-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-modal-container label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.custom-modal-container select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+}
+
+.custom-modal-container select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.custom-modal-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.custom-modal-container input[type="text"] {
+  padding: 6px;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.custom-modal-container input[type="checkbox"].form-field:checked {
+  accent-color: #000033;
+}
+
+.error-text {
+  color: red;
+  font-size: 16px;
+  margin-top: 5px;
+  display: block;
+  margin-top: -2px;
+}
+
+.dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 66%;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 19%;
+}
+
+.error-border {
+  border: 1px solid red !important;
+  border-radius: 20px;
+}
+
+.zeroPadding {
+  padding: 0;
+}
+
+.flexDisplay {
+  display: flex;
+}
+
+.zeroMargin {
+  margin: 0;
+}
